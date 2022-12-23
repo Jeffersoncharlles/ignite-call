@@ -4,7 +4,10 @@ import { useForm } from "react-hook-form"
 import {zodResolver} from '@hookform/resolvers/zod'
 import { z } from "zod"
 import { Form, FormAnnotation } from "./styles"
+import { useRouter } from "next/router"
 
+
+//=======================================================//
 const ClaimUsernameFormSchema = z.object({
   username: z.string()
     .min(3,{message:'O usuário precisa ter 3 letras'})
@@ -16,15 +19,19 @@ const ClaimUsernameFormSchema = z.object({
 })
 
 type ClaimUsernameForData = z.infer<typeof ClaimUsernameFormSchema>
+//=======================================================//
 
 export const ClaimUsernameForm = () => {
-  const { register, handleSubmit,formState:{errors} } = useForm<ClaimUsernameForData>({
+  const { register, handleSubmit,formState:{errors, isSubmitting} } = useForm<ClaimUsernameForData>({
     resolver: zodResolver(ClaimUsernameFormSchema)
   })
 
+  const router = useRouter()
+
 
   const handleClaimUsername = async (data: ClaimUsernameForData) => {
-    console.log(data)
+    const { username } = data
+    await  router.push(`/register?username=${username}`)
   }
 
   return (
@@ -38,7 +45,8 @@ export const ClaimUsernameForm = () => {
       />
       <Button
         size="sm"
-        type="submit"
+          type="submit"
+          disabled={isSubmitting}
       >
         <ArrowRight />
         Reservar</Button>
