@@ -27,7 +27,7 @@ export const  PrismaAdapter = (req:NextApiRequest,res:NextApiResponse):Adapter =
         }
       })
 
-      destroyCookie({ res }, '@ignitecall:userId',{path:'/'})
+      destroyCookie({ res }, '@ignitecall:userId',{path:'/'})//deletar cookie
 
       return {
         id: prismaUser.id,
@@ -40,11 +40,13 @@ export const  PrismaAdapter = (req:NextApiRequest,res:NextApiResponse):Adapter =
     },
 //============================================================================//
     async getUser(id) {
-      const user = await prisma.user.findUniqueOrThrow({
+      const user = await prisma.user.findUnique({
         where: {
           id
         }
       })
+
+      if(!user) return null
 
       return {
         id: user.id,
@@ -58,11 +60,15 @@ export const  PrismaAdapter = (req:NextApiRequest,res:NextApiResponse):Adapter =
 //============================================================================//
     async getUserByEmail(email) {
 
-      const user = await prisma.user.findUniqueOrThrow({
+      const user = await prisma.user.findUnique({
         where: {
           email
         }
       })
+
+      if (!user) {
+        return null
+      }
 
       return {
         id: user.id,
@@ -76,7 +82,7 @@ export const  PrismaAdapter = (req:NextApiRequest,res:NextApiResponse):Adapter =
 //============================================================================//
     async getUserByAccount({ providerAccountId, provider }) {
 
-      const { user } = await prisma.account.findUniqueOrThrow({
+      const account = await prisma.account.findUnique({
         where: {
           provider_provider_account_id: {
             provider,
@@ -87,6 +93,12 @@ export const  PrismaAdapter = (req:NextApiRequest,res:NextApiResponse):Adapter =
           user:true,
         }//buscar usuário através de outra tabela
       })
+
+      if (!account) {
+        return null
+      }
+
+      const {user} = account
 
       return {
         id: user.id,
@@ -188,7 +200,7 @@ export const  PrismaAdapter = (req:NextApiRequest,res:NextApiResponse):Adapter =
     },
 //============================================================================//
     async getSessionAndUser(sessionToken) {
-      const {user,...session} = await prisma.session.findUniqueOrThrow({
+      const session = await prisma.session.findUnique({
         where: {
           session_token:sessionToken
         },
@@ -197,6 +209,11 @@ export const  PrismaAdapter = (req:NextApiRequest,res:NextApiResponse):Adapter =
         }
       })
 
+      if (!session) {
+        return null
+      }
+
+      const {user} = session
 
       return {
         session: {

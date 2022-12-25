@@ -1,6 +1,6 @@
 import NextAuth, { NextAuthOptions } from "next-auth"
 import type { NextApiRequest, NextApiResponse } from "next"
-import GoogleProvider from "next-auth/providers/google"
+import GoogleProvider, { GoogleProfile } from "next-auth/providers/google"
 import { PrismaAdapter } from "../adpater/prisma-adpater"
 
 export const buildNextAuthOptions = (req:NextApiRequest,res:NextApiResponse): NextAuthOptions => {
@@ -19,6 +19,15 @@ export const buildNextAuthOptions = (req:NextApiRequest,res:NextApiResponse): Ne
             scope: 'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile'
           }
         },
+        profile(profile: GoogleProfile) {
+          return {
+            id: profile.sub,
+            name:profile.name,
+            username: '',//ja existe pela app por isso to retornando vazio
+            email:profile.email,
+            avatar_url: profile.picture,
+          }
+        }
       }),
       // ...add more providers here
     ],
