@@ -60,7 +60,7 @@ export const IntervalInputs = styled('div', {
   }
 })
 
-export const AuthError = styled(Text, {
+export const ValidationError = styled(Text, {
   color: '#f75a68',
   marginBottom: '$4',
 })
