@@ -4,7 +4,7 @@ import { ConnectBox, ConnectItem, Container, Header } from "./styles";
 
 
 
-export default function Register() {
+export default function ConnectCalendar() {
 
 
   // const handleRegisterSubmit = async (data) => {

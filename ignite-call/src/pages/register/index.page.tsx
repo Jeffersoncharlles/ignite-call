@@ -26,31 +26,30 @@ type registerFormData = z.infer<typeof registerFormSchema>
 //========================================================================//
 
 export default function Register() {
+//===============================================================================//
   const { register, handleSubmit,setValue, formState: { errors, isSubmitting } } = useForm<registerFormData>({
     resolver: zodResolver(registerFormSchema),
   })
-  const router = useRouter()
 
+  const router = useRouter()
+//===============================================================================//
   const handleRegisterSubmit =async (data: registerFormData) => {
     try {
-
       await api.post('/users', {
         name: data.fullName,
         username:data.username
       })
 
       await router.push('/register/connect-calendar')
-
     } catch (error) {
       if (error instanceof AxiosError && error?.response?.data?.message) {
         alert(error.response.data.message)
         return;
       }
-
       console.log(error)
     }
   }
-
+//===============================================================================//
   useEffect(() => {
     if (router.query.username) {
       setValue('username', String(router.query.username))
@@ -58,7 +57,7 @@ export default function Register() {
     }
 
   },[router.query?.username,setValue])
-
+//===============================================================================//
   return (
     <Container>
       <Header>
