@@ -6,6 +6,10 @@ export const globalStyles = globalCss({
     padding: 0,
     margin: 0,
   },
+  ':focus': {
+    outline: 0,
+    background:'transparent'
+  },
   body: {
     backgroundColor: '$gray900',
     color: '$gray100',
