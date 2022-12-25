@@ -38,6 +38,12 @@ export const buildNextAuthOptions = (req:NextApiRequest,res:NextApiResponse): Ne
           //false so que redirection
         }
         return true
+      },
+      async session({session,token,user}) {
+        return {
+          ...session,
+          user,
+        }
       }
     }
   }
