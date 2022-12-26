@@ -19,8 +19,10 @@ model User {
   avatar_url String?
   created_at DateTime @default(now())
 
-  accounts Account[]
-  sessions Session[]
+  accounts      Account[]
+  sessions      Session[]
+  timeIntervals UserTimeInterval[] //ele nao cria coluna no db
+  //um usuario possui varios  UserTimeInterval
 
   @@map("users") //definir nome da tabela
 }
@@ -56,4 +58,17 @@ model Session {
   user          User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@map("sessions") //definir nome da tabela
+}
+
+model UserTimeInterval {
+  id                    String @id @default(uuid())
+  week_day              Int
+  time_start_in_minutes Int
+  time_end_in_minutes   Int
+
+  user    User   @relation(fields: [user_id], references: [id])
+  user_id String //aqui ele realmente cria uma tabela
+  //um UserTimeInterval pertece a um usuario
+
+  @@map("users_time_intervals")
 }

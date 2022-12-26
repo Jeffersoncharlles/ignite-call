@@ -4,6 +4,7 @@ import { ArrowRight } from "phosphor-react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 
 import { z } from "zod";
+import { api } from "../../../lib/axios";
 import { converteTimeInMinutes } from "../../../utils/convert-time-strint-to-minutes";
 import { getWeekDays } from "../../../utils/get-week-days";
 import { Container, Header } from "../styles";
@@ -70,10 +71,8 @@ export default function TimesInterval() {
 
   const handleSetTimeIntervals = async (data: any) => {
     //https://github.com/react-hook-form/react-hook-form/issues/9600
-    const formData = data as TimeIntervalsFormOutput
-
-
-    console.log(formData)
+    const {intervals} = data as TimeIntervalsFormOutput
+    await api.post('/users/time-intervals', { intervals })
   }
 
   return (
