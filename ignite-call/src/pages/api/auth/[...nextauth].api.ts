@@ -1,9 +1,9 @@
 import NextAuth, { NextAuthOptions } from "next-auth"
-import type { NextApiRequest, NextApiResponse } from "next"
+import type { NextApiRequest, NextApiResponse, NextPageContext } from "next"
 import GoogleProvider, { GoogleProfile } from "next-auth/providers/google"
 import { PrismaAdapter } from "../adpater/prisma-adpater"
 
-export const buildNextAuthOptions = (req:NextApiRequest,res:NextApiResponse): NextAuthOptions => {
+export const buildNextAuthOptions = (req: NextApiRequest | NextPageContext['req'], res: NextApiResponse | NextPageContext['res']): NextAuthOptions => {
 
 
   return {
