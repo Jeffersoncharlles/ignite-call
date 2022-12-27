@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Checkbox, Heading, MultiStep, Text, TextInput } from "@ignite-ui/react";
+import { useRouter } from "next/router";
 import { ArrowRight } from "phosphor-react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 
@@ -61,6 +62,8 @@ export default function TimesInterval() {
     }
   })
 
+  const router = useRouter()
+
   const {fields } = useFieldArray({
     name: 'intervals',
     control
@@ -73,6 +76,8 @@ export default function TimesInterval() {
     //https://github.com/react-hook-form/react-hook-form/issues/9600
     const {intervals} = data as TimeIntervalsFormOutput
     await api.post('/users/time-intervals', { intervals })
+
+    await router.push('/register/update-profile')
   }
 
   return (
@@ -138,7 +143,7 @@ export default function TimesInterval() {
             {errors.intervals.message}
           </ValidationError>
         )}
-        <Button type="submit" disabled={isSubmitting}>
+        <Button  type="submit" disabled={isSubmitting}>
           Próximo Passo
           <ArrowRight />
         </Button>
