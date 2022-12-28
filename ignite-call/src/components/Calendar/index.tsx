@@ -46,7 +46,7 @@ export const Calendar = () => {
               <CalendarDay>3</CalendarDay>
             </td>
             <td>
-              <CalendarDay>4</CalendarDay>
+              <CalendarDay disabled>4</CalendarDay>
             </td>
           </tr>
         </tbody>

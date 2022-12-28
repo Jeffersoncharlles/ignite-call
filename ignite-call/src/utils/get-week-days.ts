@@ -1,6 +1,6 @@
 
 interface GetWeekDaysParams{
-  short: boolean
+  short?: boolean
   linguagem?:string
 }
 

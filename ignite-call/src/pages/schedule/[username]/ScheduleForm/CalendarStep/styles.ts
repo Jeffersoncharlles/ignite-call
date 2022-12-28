@@ -7,5 +7,8 @@ export const Container = styled(Box, {
   padding: '0',
   display: 'grid',
   maxWidth: '100%',
-  position:'relative'
+  position: 'relative',
+
+  width: 540,//tamanho e de 540px
+  gridTemplateColumns:'1fr',//ou seja ja uma coluna no grid
 })
