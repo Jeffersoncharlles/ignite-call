@@ -15,7 +15,12 @@ interface CalendarWeek {
 
 type CalendarWeeks = CalendarWeek[]
 
-export const Calendar = () => {
+interface CalendarProps {
+  selectedDate: Date | null
+  onDateSelected:(date:Date )=>void
+}
+
+export const Calendar = ({onDateSelected,selectedDate }:CalendarProps) => {
   const [currentDate,setCurrentDate] = useState(() => {
     return dayjs().set('date',1)//setando dia 1
   })
@@ -66,7 +71,11 @@ export const Calendar = () => {
 
     const calendarDays = [
       ...previousMonthFillArray.map((date) => { return { date, disable: true } }),
-      ...daysInMonthArray.map((date) => { return { date, disable: false } }),
+      ...daysInMonthArray.map((date) => {
+        return {
+          date, disable: date.endOf('day').isBefore(new Date())//desabilitar se o dia ja passou
+        }
+      }),
       ...nextMonthFillArray.map((date) => { return { date, disable: true } }),
     ] //retornar todas as datas do mes anterior e todas do atual
     //=============================================================================================//
@@ -120,7 +129,12 @@ export const Calendar = () => {
                 {days.map(({date,disable}) => {
                   return (
                     <td key={date.toString()}>
-                      <CalendarDay disabled={disable}>{date.get('date')}</CalendarDay>
+                      <CalendarDay
+                        onClick={() => onDateSelected(date.toDate())}
+                        disabled={disable}
+                      >
+                        {date.get('date')}
+                      </CalendarDay>
                     </td>
                   )
                 })}
