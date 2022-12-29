@@ -24,6 +24,7 @@ model User {
   sessions      Session[]
   timeIntervals UserTimeInterval[] //ele nao cria coluna no db
   //um usuario possui varios  UserTimeInterval
+  Scheduling    Scheduling[]
 
   @@map("users") //definir nome da tabela
 }
@@ -72,4 +73,18 @@ model UserTimeInterval {
   //um UserTimeInterval pertece a um usuario
 
   @@map("users_time_intervals")
+}
+
+model Scheduling {
+  id           String   @id @default(uuid())
+  date         DateTime
+  name         String
+  email        String
+  observations String?
+  created_at   DateTime @default(now())
+  user_id      String
+
+  user User @relation(fields: [user_id], references: [id]) //sempre vai pertercer a um usuario
+
+  @@map("schedulings")
 }
