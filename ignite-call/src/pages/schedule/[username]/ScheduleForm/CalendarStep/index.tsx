@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -12,34 +13,44 @@ interface Availability {
 
 
 export function CalendarStep() {
-  const [selectedDate,setSelectedDate] = useState<Date | null>(null)
-  const [availability, setAvailability] = useState<Availability | null>(null)
   const router = useRouter()
-
   const username = String(router.query?.username)
 
+  const [selectedDate,setSelectedDate] = useState<Date | null>(null)
   const hasSelectedDate = !!selectedDate
-
   const weekDay = selectedDate ? dayjs(selectedDate).format('dddd') :null
   const describedDate = selectedDate ? dayjs(selectedDate).format('DD[ de ]MMMM') : null
 
-  const availabilityGetAll = async () => {
-    const result = await api.get(`/users/${username}/availability`, {
+  const selectedDateWithoutTime = selectedDate ? dayjs(selectedDate).format('YYYY-MM-DD') : null
+  const { data: availability } = useQuery<Availability>(['availability', selectedDateWithoutTime], async () => {
+    const response = await api.get(`/users/${username}/availability`, {
       params: {
-        date: dayjs(selectedDate).format('YYYY-MM-DD')
-      }
+        date: selectedDateWithoutTime,
+      },
     })
-    if (result.data) {
-      setAvailability(result.data)
-    }
-  }
+    return response.data
+  }, {
+    enabled: !!selectedDate//validar so faz se existir selectedDate
+  })//ele tem cache
 
-  useEffect(() => {
-    if (!selectedDate) {
-      return;
-    }
-    availabilityGetAll()
-  }, [selectedDate, username])
+  // const [availability, setAvailability] = useState<Availability | null>(null)
+  // const availabilityGetAll = async () => {
+  //   const result = await api.get(`/users/${username}/availability`, {
+  //     params: {
+  //       date: dayjs(selectedDate).format('YYYY-MM-DD')
+  //     }
+  //   })
+  //   if (result.data) {
+  //     setAvailability(result.data)
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   if (!selectedDate) {
+  //     return;
+  //   }
+  //   availabilityGetAll()
+  // }, [selectedDate, username])
 
   return (
     <Container isTimePickerOpen={hasSelectedDate}>
