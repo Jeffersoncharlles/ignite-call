@@ -1,4 +1,4 @@
-import { Box, styled, Text } from '@ignite-ui/react'
+import { Box, Heading, styled, Text } from '@ignite-ui/react'
 
 export const Container = styled('main', {
   maxWidth: 572,
@@ -9,7 +9,7 @@ export const Container = styled('main', {
 export const Header = styled('div', {
   padding: '0 $6',
 
-  [`> $\apps{Heading}`]: {
+  [`> ${Heading}`]: {
     lineHeight: '$base',
   },
   [`> ${Text}`]: {
