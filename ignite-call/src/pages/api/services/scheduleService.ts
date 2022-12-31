@@ -1,5 +1,8 @@
+import { randomUUID } from "crypto";
 import dayjs from "dayjs"
+import { google } from "googleapis";
 import { prisma } from "../../../lib/prisma"
+import { getGoogleOAuthToken } from "../auth/google";
 
 
 interface Props {
@@ -47,7 +50,7 @@ class ScheduleService {
       }
     }
 
-    await prisma.scheduling.create({
+    const scheduling =  await prisma.scheduling.create({
       data: {
         name,
         email,
@@ -56,6 +59,39 @@ class ScheduleService {
         date: schedulingDate.toDate()
       }
     })
+//============================ conexão google api ===========================//
+    const calendar = google.calendar({
+      version: 'v3',
+      auth: await getGoogleOAuthToken(user.id)
+    })
+
+    await calendar.events.insert({
+      calendarId: 'primary',
+      conferenceDataVersion:1, //tem que colocar 1 para validar enviar email
+      requestBody: {
+        summary: `Ignite Call: ${name}`,
+        description: observations,
+        start: {
+          dateTime:schedulingDate.format(),
+        },
+        end: {
+          dateTime:schedulingDate.add(1, 'hour').format()
+        },
+        attendees: [
+          {email,displayName:name ,}
+        ],
+        conferenceData: {
+          createRequest: {
+            requestId: scheduling.id,
+            conferenceSolutionKey: {
+              type: 'hangoutsMeet',
+
+            }
+          }
+        }
+      }
+    })
+  //============================ conexão google api ===========================//
 
     return {}
   }
