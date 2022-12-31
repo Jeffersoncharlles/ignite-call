@@ -24,7 +24,8 @@ interface CalendarProps {
 }
 
 interface BlockedDates {
-  blockedWeekDays:number[]
+  blockedWeekDays: number[]
+  blockedDates:number []
 }
 
 export const Calendar = ({onDateSelected,selectedDate }:CalendarProps) => {
@@ -55,7 +56,7 @@ export const Calendar = ({onDateSelected,selectedDate }:CalendarProps) => {
     const response = await api.get(`/users/${username}/blocked-dates`, {
       params: {
         year: currentDate.get('year'),
-        month: currentDate.get('month')
+        month: String(currentDate.get('month') + 1).padStart(2,'0')
       },
     })
     return response.data
@@ -101,7 +102,11 @@ export const Calendar = ({onDateSelected,selectedDate }:CalendarProps) => {
       ...previousMonthFillArray.map((date) => { return { date, disable: true } }),
       ...daysInMonthArray.map((date) => {
         return {
-          date, disable: date.endOf('day').isBefore(new Date()) || blockedDates?.blockedWeekDays.includes(date.get('day'))
+          date,
+          disable:
+            date.endOf('day').isBefore(new Date()) ||
+            blockedDates?.blockedWeekDays.includes(date.get('day')) ||
+            blockedDates.blockedDates.includes(date.get('date')),//se o dia dessa data tiver lotado sai do calendário
 
           //desabilitar se o dia ja passou ou o dia que nao ta disponível
         }

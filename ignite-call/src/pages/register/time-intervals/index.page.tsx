@@ -70,7 +70,7 @@ export default function TimesInterval() {
   })
 
   const intervals = watch('intervals')
-  const weekDays = getWeekDays()
+  const weekDays = getWeekDays({short:false})
 
   const handleSetTimeIntervals = async (data: any) => {
     //https://github.com/react-hook-form/react-hook-form/issues/9600
