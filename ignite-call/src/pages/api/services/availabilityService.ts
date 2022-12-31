@@ -78,9 +78,13 @@ class AvailabilityService {
 
     //percorrer todos os horários possível filtrando eles
     const availabilityTimes = possibleTimes.filter(time => {
+      const isTimeBlocked = blockedTimes.some(blockedTime => blockedTime.date.getHours() === time)
       //validar que nao existe pelo menos 1
       // onde bate esse horário com a hora de agendamento ou seja nao pode marcar dois na mesma hora
-      return !blockedTimes.some(blockedTime=>blockedTime.date.getHours() === time)
+
+      const isTimeInPast = referenteDate.set('hour', time).isBefore(new Date()) //validando se ela esta no passado
+
+      return !isTimeBlocked && ! isTimeInPast
     })
 
     return {

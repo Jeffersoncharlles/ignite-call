@@ -10,9 +10,12 @@ interface Availability {
   possibleTimes: number[]
   availabilityTimes: number[]
 }
+interface CalendarStepProps {
+  onSelectDateTime: (date: Date) => void
+}
 
 
-export function CalendarStep() {
+export function CalendarStep({ onSelectDateTime }: CalendarStepProps) {
   const router = useRouter()
   const username = String(router.query?.username)
 
@@ -32,6 +35,11 @@ export function CalendarStep() {
   }, {
     enabled: !!selectedDate//validar so faz se existir selectedDate
   })//ele tem cache
+
+  const handleSelectTime = (hour:number) => {
+    const dateWithTime = dayjs(selectedDate).set('hour', hour).startOf('hour').toDate()
+    onSelectDateTime(dateWithTime)
+  }
 
   // const [availability, setAvailability] = useState<Availability | null>(null)
   // const availabilityGetAll = async () => {
@@ -64,7 +72,11 @@ export function CalendarStep() {
           <TimePickerList>
             {availability?.possibleTimes.map(hour => {
               return (
-                <TimerPickerItem key={hour.toString()} disabled={!availability.availabilityTimes.includes(hour)}>
+                <TimerPickerItem
+                  key={hour.toString()}
+                  disabled={!availability.availabilityTimes.includes(hour)}
+                  onClick={() => handleSelectTime(hour)}
+                >
                   {String(hour).padStart(2,'0')}:00h
                 </TimerPickerItem>
               )
