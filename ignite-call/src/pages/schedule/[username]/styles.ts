@@ -1,10 +1,9 @@
-import { Heading, styled, Text } from "@ignite-ui/react";
-
+import { Heading, styled, Text } from '@ignite-ui/react'
 
 export const Container = styled('div', {
-  maxWidth: 852, //calendar open
+  maxWidth: 852, // calendar open
   padding: '0 $4',
-  margin: '$20 auto $4',//80px em cima auto para centralizar e 16px no bottom
+  margin: '$20 auto $4', // 80px em cima auto para centralizar e 16px no bottom
 })
 
 export const UserHeader = styled('div', {
@@ -14,11 +13,10 @@ export const UserHeader = styled('div', {
 
   [`> ${Heading}`]: {
     lineHeight: '$base',
-    marginTop: '$2'
+    marginTop: '$2',
   },
 
   [`> ${Text}`]: {
-    color:'$gray400'
-}
-
+    color: '$gray400',
+  },
 })

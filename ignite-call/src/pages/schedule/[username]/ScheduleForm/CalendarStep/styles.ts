@@ -1,6 +1,4 @@
-import { Box, styled, Text } from "@ignite-ui/react";
-
-
+import { Box, styled, Text } from '@ignite-ui/react'
 
 export const Container = styled(Box, {
   margin: '$6 auto 0',
@@ -15,41 +13,35 @@ export const Container = styled(Box, {
         gridTemplateColumns: '1fr 280px',
 
         '@media(max-width:900px)': {
-          gridTemplateColumns: '1fr',//ou seja ja uma coluna no grid
+          gridTemplateColumns: '1fr', // ou seja ja uma coluna no grid
         },
       },
       false: {
-        width: 540,//tamanho e de 540px
-        gridTemplateColumns: '1fr',//ou seja ja uma coluna no grid
+        width: 540, // tamanho e de 540px
+        gridTemplateColumns: '1fr', // ou seja ja uma coluna no grid
       },
-    }
+    },
   },
-
-
 })
-
 
 export const TimePicker = styled('div', {
   borderLeft: '1px solid $gray600',
   padding: '$6 $6 0',
   overflowY: 'scroll',
 
-
-  position: 'absolute',//hack para o scroll ser do tamanho do calendar
+  position: 'absolute', // hack para o scroll ser do tamanho do calendar
   top: 0,
-  bottom:0,
+  bottom: 0,
   right: 0,
-  width: 280,//aqui coloca o tamanho máximo
-
+  width: 280, // aqui coloca o tamanho máximo
 })
-
 
 export const TimePickerHeader = styled(Text, {
   fontWeight: '$medium',
 
   span: {
-    color:'$gray200'
-  }
+    color: '$gray200',
+  },
 })
 
 export const TimePickerList = styled('div', {
@@ -59,11 +51,9 @@ export const TimePickerList = styled('div', {
   gap: '$2',
 
   '@media(max-width:900px)': {
-    gridTemplateColumns: '2fr',//ou seja ja 2 colunas no grid
+    gridTemplateColumns: '2fr', // ou seja ja 2 colunas no grid
   },
-
 })
-
 
 export const TimerPickerItem = styled('button', {
   border: 0,
@@ -75,23 +65,21 @@ export const TimerPickerItem = styled('button', {
   fontSize: '$sm',
   lineHeight: '$base',
 
-
   '&:last-child': {
-    marginBottom: '$6',//da um padding no button
-
+    marginBottom: '$6', // da um padding no button
   },
 
   '&:disabled': {
     background: 'none',
     cursor: 'default',
-    opacity:0.4
+    opacity: 0.4,
   },
 
   '&:not(:disabled):hover': {
-    background:"$gray500",
+    background: '$gray500',
   },
 
   '&:focus': {
-    boxShadow: '0 0 0 2px $colors$gray100'
-  }
+    boxShadow: '0 0 0 2px $colors$gray100',
+  },
 })

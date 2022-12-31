@@ -1,27 +1,21 @@
-import { prisma } from "../../../lib/prisma"
-
+import { prisma } from '../../../lib/prisma'
 
 interface Props {
   user_id: string
-  bio:string
+  bio: string
 }
 
-
 class UpdateProfile {
-  async update({ user_id,bio }: Props) {
+  async update({ user_id, bio }: Props) {
     await prisma.user.update({
       where: {
-        id:user_id
+        id: user_id,
       },
       data: {
-        bio
-      }
+        bio,
+      },
     })
-
-
   }
 }
 
-export {
-  UpdateProfile
-}
+export { UpdateProfile }

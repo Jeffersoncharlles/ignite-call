@@ -1,33 +1,28 @@
-import { Box, Heading, styled, Text } from "@ignite-ui/react";
-
+import { Box, styled, Text } from '@ignite-ui/react'
 
 export const Container = styled('main', {
   maxWidth: 572,
   margin: '$20 auto $4',
-  padding: '0 $4'
+  padding: '0 $4',
 })
 
 export const Header = styled('div', {
   padding: '0 $6',
 
   [`> $\apps{Heading}`]: {
-    lineHeight: '$base'
+    lineHeight: '$base',
   },
   [`> ${Text}`]: {
     color: '$gray200',
-    marginBottom: '$6'
-  }
+    marginBottom: '$6',
+  },
 })
-
 
 export const ConnectBox = styled(Box, {
   marginTop: '$6',
   display: 'flex',
   flexDirection: 'column',
-
-
 })
-
 
 export const ConnectItem = styled('div', {
   display: 'flex',
@@ -39,11 +34,9 @@ export const ConnectItem = styled('div', {
   borderRadius: '$md',
 
   marginBottom: '$4',
-
 })
-
 
 export const AuthError = styled(Text, {
   color: '#f75a68',
-  marginBottom:'$4',
+  marginBottom: '$4',
 })

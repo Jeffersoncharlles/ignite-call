@@ -1,10 +1,16 @@
-import { useQuery } from "@tanstack/react-query";
-import dayjs from "dayjs";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { Calendar } from "../../../../../components/Calendar";
-import { api } from "../../../../../lib/axios";
-import { Container, TimePicker, TimePickerHeader, TimePickerList, TimerPickerItem } from "./styles";
+import { useQuery } from '@tanstack/react-query'
+import dayjs from 'dayjs'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
+import { Calendar } from '../../../../../components/Calendar'
+import { api } from '../../../../../lib/axios'
+import {
+  Container,
+  TimePicker,
+  TimePickerHeader,
+  TimePickerList,
+  TimerPickerItem,
+} from './styles'
 
 interface Availability {
   possibleTimes: number[]
@@ -14,30 +20,40 @@ interface CalendarStepProps {
   onSelectDateTime: (date: Date) => void
 }
 
-
 export function CalendarStep({ onSelectDateTime }: CalendarStepProps) {
   const router = useRouter()
   const username = String(router.query?.username)
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null)
 
-  const [selectedDate,setSelectedDate] = useState<Date | null>(null)
   const hasSelectedDate = !!selectedDate
-  const weekDay = selectedDate ? dayjs(selectedDate).format('dddd') :null
-  const describedDate = selectedDate ? dayjs(selectedDate).format('DD[ de ]MMMM') : null
+  const weekDay = selectedDate ? dayjs(selectedDate).format('dddd') : null
+  const describedDate = selectedDate
+    ? dayjs(selectedDate).format('DD[ de ]MMMM')
+    : null
 
-  const selectedDateWithoutTime = selectedDate ? dayjs(selectedDate).format('YYYY-MM-DD') : null
-  const { data: availability } = useQuery<Availability>(['availability', selectedDateWithoutTime], async () => {
-    const response = await api.get(`/users/${username}/availability`, {
-      params: {
-        date: selectedDateWithoutTime,
-      },
-    })
-    return response.data
-  }, {
-    enabled: !!selectedDate//validar so faz se existir selectedDate
-  })//ele tem cache
+  const selectedDateWithoutTime = selectedDate
+    ? dayjs(selectedDate).format('YYYY-MM-DD')
+    : null
+  const { data: availability } = useQuery<Availability>(
+    ['availability', selectedDateWithoutTime],
+    async () => {
+      const response = await api.get(`/users/${username}/availability`, {
+        params: {
+          date: selectedDateWithoutTime,
+        },
+      })
+      return response.data
+    },
+    {
+      enabled: !!selectedDate, // validar so faz se existir selectedDate
+    },
+  ) // ele tem cache
 
-  const handleSelectTime = (hour:number) => {
-    const dateWithTime = dayjs(selectedDate).set('hour', hour).startOf('hour').toDate()
+  const handleSelectTime = (hour: number) => {
+    const dateWithTime = dayjs(selectedDate)
+      .set('hour', hour)
+      .startOf('hour')
+      .toDate()
     onSelectDateTime(dateWithTime)
   }
 
@@ -70,20 +86,20 @@ export function CalendarStep({ onSelectDateTime }: CalendarStepProps) {
             {weekDay} <span>{describedDate}</span>
           </TimePickerHeader>
           <TimePickerList>
-            {availability?.possibleTimes.map(hour => {
+            {availability?.possibleTimes.map((hour) => {
               return (
                 <TimerPickerItem
                   key={hour.toString()}
                   disabled={!availability.availabilityTimes.includes(hour)}
                   onClick={() => handleSelectTime(hour)}
                 >
-                  {String(hour).padStart(2,'0')}:00h
+                  {String(hour).padStart(2, '0')}:00h
                 </TimerPickerItem>
               )
             })}
           </TimePickerList>
         </TimePicker>
       )}
-   </Container>
+    </Container>
   )
 }

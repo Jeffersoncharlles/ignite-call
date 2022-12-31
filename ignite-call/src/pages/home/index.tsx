@@ -8,15 +8,17 @@ export default function Home() {
   return (
     <>
       <NextSeo
-        title='Descomplique sua agenda | ignite call'
-        description='Conecte seu calendário e permita que as pessoas marquem agendamentos no seu tempo livre.'
-
+        title="Descomplique sua agenda | ignite call"
+        description="Conecte seu calendário e permita que as pessoas marquem agendamentos no seu tempo livre."
       />
       <Container>
         <Hero>
-          <Heading as='h1' size="4xl">Agendamento descomplicado</Heading>
+          <Heading as="h1" size="4xl">
+            Agendamento descomplicado
+          </Heading>
           <Text size="xl">
-            Conecte seu calendário e permita que as pessoas marquem agendamentos no seu tempo livre.
+            Conecte seu calendário e permita que as pessoas marquem agendamentos
+            no seu tempo livre.
           </Text>
           <ClaimUsernameForm />
         </Hero>
@@ -26,12 +28,11 @@ export default function Home() {
             quality={100}
             width={827}
             height={400}
-            alt='preview do calendário de agendamento'
+            alt="preview do calendário de agendamento"
             priority
           />
         </Preview>
       </Container>
-
     </>
   )
 }

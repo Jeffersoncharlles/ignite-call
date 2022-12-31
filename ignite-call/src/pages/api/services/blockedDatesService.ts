@@ -1,5 +1,4 @@
-import { prisma } from "../../../lib/prisma"
-
+import { prisma } from '../../../lib/prisma'
 
 interface Props {
   username: string
@@ -7,38 +6,38 @@ interface Props {
   month: string | string[] | undefined
 }
 
-
 class BlockedDatesService {
   async handle({ username, year, month }: Props) {
-
     const user = await prisma.user.findUnique({
       where: {
-        username
-      }
+        username,
+      },
     })
 
     if (!user) {
       return {
-        message: 'user does not exist.'
+        message: 'user does not exist.',
       }
     }
 
     const availableWeekDays = await prisma.userTimeInterval.findMany({
       select: {
-        week_day:true //pegar so o dia da semana
+        week_day: true, // pegar so o dia da semana
       },
       where: {
-        user_id:user.id
-      }
-    })//retornar o dia da semana que tem no usuário
+        user_id: user.id,
+      },
+    }) // retornar o dia da semana que tem no usuário
 
-    const blockedWeekDays = [0, 1, 2, 3, 4, 5, 6].filter(weekDay => {
-      //retornar os que nao tem disponibilidade
-      return !availableWeekDays.some(availableWeekDay => availableWeekDay.week_day === weekDay)
+    const blockedWeekDays = [0, 1, 2, 3, 4, 5, 6].filter((weekDay) => {
+      // retornar os que nao tem disponibilidade
+      return !availableWeekDays.some(
+        (availableWeekDay) => availableWeekDay.week_day === weekDay,
+      )
     })
 
     // seg [8,9,10] - [8,9] = true // esse tem disponibilidade ainda
-    //ter [8,9,10] - [8,9,10] = false  //nao tem disponibilidade
+    // ter [8,9,10] - [8,9,10] = false  //nao tem disponibilidade
 
     const blockDatesRaw: Array<{ date: number }> = await prisma.$queryRaw`
       SELECT
@@ -58,18 +57,16 @@ class BlockedDatesService {
         ((UTILS.time_end_in_minutes - UTILS.time_start_in_minutes )/ 60 )
 
       HAVING amount >= size
-    `//toda essa query e para verificar se tem disponibilidade ou nao em algum dia por exemplo dia 3 tem 3 horários para marcar se tudo tiver lotado ele retorna que dia 3 nao ta disponível
+    ` // toda essa query e para verificar se tem disponibilidade ou nao em algum dia por exemplo dia 3 tem 3 horários para marcar se tudo tiver lotado ele retorna que dia 3 nao ta disponível
 
-    const blockedDates = blockDatesRaw.map((item)=>item.date)
+    const blockedDates = blockDatesRaw.map((item) => item.date)
 
-    //retornar os dias que nao tem disponibilidades
+    // retornar os dias que nao tem disponibilidades
     return {
       blockedWeekDays,
-      blockedDates
+      blockedDates,
     }
   }
 }
 
-export {
-  BlockedDatesService
-}
+export { BlockedDatesService }

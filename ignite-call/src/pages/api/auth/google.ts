@@ -1,39 +1,44 @@
-import dayjs from "dayjs"
-import { google } from "googleapis"
-import { prisma } from "../../../lib/prisma"
+import dayjs from 'dayjs'
+import { google } from 'googleapis'
+import { prisma } from '../../../lib/prisma'
 
-
-
-export const getGoogleOAuthToken = async (user_id:string) => {
+export const getGoogleOAuthToken = async (user_id: string) => {
   const account = await prisma.account.findFirstOrThrow({
     where: {
-      user_id: user_id,
-      provider:'google',
-    }
+      user_id,
+      provider: 'google',
+    },
   })
 
   const auth = new google.auth.OAuth2(
     process.env.GOOGLE_CLIENT_ID,
-    process.env.GOOGLE_CLIENT_SECRET
+    process.env.GOOGLE_CLIENT_SECRET,
   )
 
   auth.setCredentials({
     access_token: account.access_token,
     refresh_token: account.refresh_token,
-    expiry_date: account.expires_at ? account.expires_at * 1000 : null
+    expiry_date: account.expires_at ? account.expires_at * 1000 : null,
   })
 
   if (!account.expires_at) {
-    return auth //se nao tiver o token nunca espira
+    return auth // se nao tiver o token nunca espira
   }
-  const isTokenExpired = dayjs(account.expires_at * 1000).isBefore(new Date())//se e anterior a data atual
+  const isTokenExpired = dayjs(account.expires_at * 1000).isBefore(new Date()) // se e anterior a data atual
 
   if (isTokenExpired) {
     const { credentials } = await auth.refreshAccessToken()
-    const { access_token, expiry_date, id_token, refresh_token, scope, token_type } = credentials
+    const {
+      access_token,
+      expiry_date,
+      id_token,
+      refresh_token,
+      scope,
+      token_type,
+    } = credentials
     await prisma.account.update({
       where: {
-        id:account.id
+        id: account.id,
       },
       data: {
         access_token,
@@ -41,14 +46,14 @@ export const getGoogleOAuthToken = async (user_id:string) => {
         id_token,
         refresh_token,
         scope,
-        token_type
-      }
+        token_type,
+      },
     })
 
     auth.setCredentials({
       access_token,
       refresh_token,
-      expiry_date
+      expiry_date,
     })
   }
 

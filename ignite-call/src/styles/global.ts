@@ -8,7 +8,7 @@ export const globalStyles = globalCss({
   },
   ':focus': {
     outline: 0,
-    background:'transparent'
+    background: 'transparent',
   },
   body: {
     backgroundColor: '$gray900',

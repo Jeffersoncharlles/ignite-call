@@ -1,69 +1,58 @@
-import { Avatar, Heading, Text } from "@ignite-ui/react";
-import { GetStaticPaths, GetStaticProps } from "next";
-import { NextSeo } from "next-seo";
-import { prisma } from "../../../lib/prisma";
-import { ScheduleForm } from "./ScheduleForm";
-import { Container, UserHeader } from "./styles";
+import { Avatar, Heading, Text } from '@ignite-ui/react'
+import { GetStaticPaths, GetStaticProps } from 'next'
+import { NextSeo } from 'next-seo'
+import { prisma } from '../../../lib/prisma'
+import { ScheduleForm } from './ScheduleForm'
+import { Container, UserHeader } from './styles'
 
-interface ScheduleProps{
+interface ScheduleProps {
   user: {
-    name: string;
-    bio: string ;
-    avatarUrl: string ;
+    name: string
+    bio: string
+    avatarUrl: string
   }
 }
 
-
-export default function Schedule({ user}:ScheduleProps) {
-
-
-
+export default function Schedule({ user }: ScheduleProps) {
   return (
     <>
-       <NextSeo
+      <NextSeo
         title={`Agendar com ${user.name} | Ignite call`}
-        description='Vamos marcar sua call agora com o usuário'
+        description="Vamos marcar sua call agora com o usuário"
       />
 
-    <Container>
-      <UserHeader>
-        <Avatar src={user.avatarUrl} alt={user.name} />
-        <Heading>{user.name}</Heading>
-        <Text>
-          {user.bio}
-        </Text>
-      </UserHeader>
+      <Container>
+        <UserHeader>
+          <Avatar src={user.avatarUrl} alt={user.name} />
+          <Heading>{user.name}</Heading>
+          <Text>{user.bio}</Text>
+        </UserHeader>
 
-     <ScheduleForm />
-
+        <ScheduleForm />
       </Container>
     </>
   )
 }
 
-
-
 export const getStaticPaths: GetStaticPaths = async () => {
-
-//paths:[] so gera a pagina static quando esta acessando
+  // paths:[] so gera a pagina static quando esta acessando
   return {
     paths: [],
-    fallback:'blocking'
+    fallback: 'blocking',
   }
 }
 
-
-export const getStaticProps: GetStaticProps = async ({params}) => {
+export const getStaticProps: GetStaticProps = async ({ params }) => {
   const username = String(params?.username)
 
   const user = await prisma.user.findUnique({
     where: {
-      username
-    }
+      username,
+    },
   })
 
   if (!user) {
-    return {notFound:true}
+    return { notFound: true }
   }
 
   return {
@@ -72,8 +61,8 @@ export const getStaticProps: GetStaticProps = async ({params}) => {
         name: user.name,
         bio: user.bio,
         avatarUrl: user.avatar_url,
-      }
+      },
     },
-    revalidate: 60 *60 *24//1 day
+    revalidate: 60 * 60 * 24, // 1 day
   }
 }
