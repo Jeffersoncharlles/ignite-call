@@ -1,5 +1,6 @@
 import { Button, Heading, MultiStep, Text, TextInput } from "@ignite-ui/react";
 import { signIn, useSession } from "next-auth/react";
+import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
 import { ArrowRight, Check } from "phosphor-react";
 import { AuthError, ConnectBox, ConnectItem, Container, Header } from "./styles";
@@ -22,6 +23,12 @@ export default function ConnectCalendar() {
   }
 
   return (
+    <>
+      <NextSeo
+        title='Conecte sua agenda do google | Ignite call'
+        description='conecte sua agenda do google.'
+        noindex
+      />
     <Container>
       <Header>
         <Heading as="h3">
@@ -52,6 +59,7 @@ export default function ConnectCalendar() {
 
         <Button onClick={handleNext} disabled={!isSignedIn} type="submit">Proximo Passo <ArrowRight /></Button>
       </ConnectBox>
-    </Container>
+      </Container>
+    </>
   )
 }

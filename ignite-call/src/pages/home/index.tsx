@@ -1,4 +1,5 @@
 import { Heading, Text } from '@ignite-ui/react'
+import { NextSeo } from 'next-seo'
 import Image from 'next/image'
 import { ClaimUsernameForm } from './components/ClaimUsernameForm'
 import { Container, Hero, Preview } from './styles'
@@ -6,6 +7,11 @@ import { Container, Hero, Preview } from './styles'
 export default function Home() {
   return (
     <>
+      <NextSeo
+        title='Descomplique sua agenda | ignite call'
+        description='Conecte seu calendário e permita que as pessoas marquem agendamentos no seu tempo livre.'
+
+      />
       <Container>
         <Hero>
           <Heading as='h1' size="4xl">Agendamento descomplicado</Heading>

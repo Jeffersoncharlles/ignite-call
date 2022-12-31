@@ -10,6 +10,7 @@ import { unstable_getServerSession } from "next-auth";
 import { buildNextAuthOptions } from "../../api/auth/[...nextauth].api";
 import { api } from "../../../lib/axios";
 import { useRouter } from "next/router";
+import { NextSeo } from "next-seo";
 
 
 
@@ -38,6 +39,14 @@ export default function UpdateProfile() {
   }
 
   return (
+    <>
+    <NextSeo
+        title='Atualizando seu perfil | Ignite call'
+        description='chegou a hora de atualizar seu perfil'
+        noindex
+      />
+
+
     <Container>
       <Header>
         <Heading as="h3">
@@ -67,7 +76,8 @@ export default function UpdateProfile() {
         </label>
         <Button disabled={isSubmitting} type="submit">Finalizar<ArrowRight /></Button>
       </ProfileBox>
-    </Container>
+      </Container>
+    </>
   )
 }
 export const getServerSideProps: GetServerSideProps = async ({req,res}) => {

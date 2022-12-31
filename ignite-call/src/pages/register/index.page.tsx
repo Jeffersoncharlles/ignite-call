@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Heading, MultiStep, Text, TextInput } from "@ignite-ui/react";
 import { AxiosError } from "axios";
+import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
 import { ArrowRight } from "phosphor-react";
 import { useEffect } from "react";
@@ -59,6 +60,12 @@ export default function Register() {
   },[router.query?.username,setValue])
 //===============================================================================//
   return (
+    <>
+    <NextSeo
+        title='Crie uma conta  | Ignite call'
+        description='Criei sua conta para se conectar.'
+      />
+
     <Container>
       <Header>
         <Heading as="h3">
@@ -91,6 +98,7 @@ export default function Register() {
         <Button disabled={isSubmitting} type="submit">Proximo Passo <ArrowRight /></Button>
       </Form>
 
-    </Container>
+      </Container>
+    </>
   )
 }
