@@ -37,10 +37,21 @@ class BlockedDatesService {
       return !availableWeekDays.some(availableWeekDay => availableWeekDay.week_day === weekDay)
     })
 
+    // seg [8,9,10] - [8,9] = true // esse tem disponibilidade ainda
+    //ter [8,9,10] - [8,9,10] = false  //nao tem disponibilidade
+
+    const blockDatesRaw = await prisma.$queryRaw`
+      SELECT *
+      FROM schedulings S
+      WHERE S.user_id ${user.id}
+        AND DATE_FORMAT(S.date, "%Y-%m") = ${`${year}-${month}`}
+    `
+
 
     //retornar os dias que nao tem disponibilidades
     return {
-      blockedWeekDays
+      blockedWeekDays,
+      blockDatesRaw
     }
   }
 }
