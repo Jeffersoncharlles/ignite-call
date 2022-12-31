@@ -6,8 +6,9 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 model User {
@@ -48,6 +49,7 @@ model Account {
   user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@unique([provider, provider_account_id])
+  @@index([user_id])
   @@map("accounts") //definir nome da tabela
 }
 
@@ -59,6 +61,7 @@ model Session {
   expires       DateTime
   user          User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
+  @@index([user_id])
   @@map("sessions") //definir nome da tabela
 }
 
@@ -72,6 +75,7 @@ model UserTimeInterval {
   user_id String //aqui ele realmente cria uma tabela
   //um UserTimeInterval pertece a um usuario
 
+  @@index([user_id])
   @@map("users_time_intervals")
 }
 
@@ -86,5 +90,6 @@ model Scheduling {
 
   user User @relation(fields: [user_id], references: [id], onDelete: Cascade) //sempre vai pertercer a um usuario
 
+  @@index([user_id])
   @@map("schedulings")
 }
