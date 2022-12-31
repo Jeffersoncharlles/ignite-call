@@ -26,7 +26,7 @@ yarn dev
 ```
 
 ## PREVIEW
-<a href="https://nubank-web-refacture-designer.vercel.app/">Ignite-Call</a>
+<a href="https://ignite-call-orpin.vercel.app/">Ignite-Call</a>
 ## 🚀 Technologies:
 
 This Front-End project was developed using the following technologies:
