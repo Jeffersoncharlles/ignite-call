@@ -64,7 +64,7 @@ class ScheduleService {
       calendarId: 'primary',
       conferenceDataVersion: 1, // tem que colocar 1 para validar enviar email
       requestBody: {
-        summary: `Ignite Call: ${name}`,
+        summary: `meeting with ${user.name}: ${name}`,
         description: observations,
         start: {
           dateTime: schedulingDate.format(),
