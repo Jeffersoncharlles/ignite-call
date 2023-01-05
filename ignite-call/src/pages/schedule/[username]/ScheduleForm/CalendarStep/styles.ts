@@ -14,6 +14,7 @@ export const Container = styled(Box, {
 
         '@media(max-width:900px)': {
           gridTemplateColumns: '1fr', // ou seja ja uma coluna no grid
+          justifySelf:'center'
         },
       },
       false: {
@@ -29,15 +30,24 @@ export const TimePicker = styled('div', {
   padding: '$6 $6 0',
   overflowY: 'scroll',
 
-  position: 'absolute', // hack para o scroll ser do tamanho do calendar
-  top: 0,
-  bottom: 0,
-  right: 0,
+  // position: 'absolute', // hack para o scroll ser do tamanho do calendar
+  // top: 0,
+  // bottom: 0,
+  // right: 0,
   width: 280, // aqui coloca o tamanho máximo
+
+  '@media(max-width:900px)': {
+    justifySelf: 'center',
+    borderTop:'1px solid $gray600',
+    borderLeft: 0,
+    width: 280,
+    backgroundColor: '$gray800'
+  },
 })
 
 export const TimePickerHeader = styled(Text, {
   fontWeight: '$medium',
+  marginLeft:'$6',
 
   span: {
     color: '$gray200',
